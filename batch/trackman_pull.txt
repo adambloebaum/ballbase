@@ -1,0 +1,7 @@
+option batch abort
+option confirm off
+open sftp://**USERNAME**:**PASSWORD**@ftp.trackmanbaseball.com:**PORT**
+cd /practice/%1%/%2%/%3%
+lcd **PATH TO LOCAL FOLDER**\%1%-%2%-%3%
+get *
+exit
