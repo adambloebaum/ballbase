@@ -6,7 +6,7 @@ from dash.dependencies import Input, Output
 import pandas as pd
 import dash_table as dt
 
-app = dash.Dash('Pitch Hub')
+app = dash.Dash('Pitch Dash')
 
 #import csv as df and select columns
 #include filename
