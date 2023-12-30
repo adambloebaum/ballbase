@@ -118,7 +118,7 @@ if os.path.exists(data_dir) and any(fname.endswith('.csv') for fname in os.listd
 
             # save fig to specific directory using file name
 
-            plt.savefig(os.path.join(viz_dir, file_name))
+            plt.savefig(os.path.join(viz_dir, file_name), bbox_inches='tight', pad_inches=0.3)
 
     print("Visualizations created.")
 
