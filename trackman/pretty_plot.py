@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # initialize import/export directories
-import_dir = r'C:\Users\adam.bloebaum\Desktop\Pitching_2023-12-28T162110_verified.csv'
-export_dir = r'C:\Users\adam.bloebaum\Desktop'
+import_dir = r'PATH TO CSV FILE'
+export_dir = r'PATH TO SAVE LOCATION'
 
 df = pd.read_csv(import_dir)
 
