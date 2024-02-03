@@ -8,7 +8,7 @@ for /f "tokens=2-4 delims=/ " %%a in ('date /t') do (
     set day=%%b
 )
 
-rem convert date to Julian and decrement to get yesterday
+rem convert date to julian and decrement to get yesterday
 set /a jd= %year%*10000 + %month%*100 + %day% - 1
 
 rem extract year, month, and day from Julian date
@@ -32,5 +32,5 @@ if %errorlevel% == 0 (
     echo File transfer completed successfully.
 )
 
-rem call WinSCP script for yesterday's date
+rem call winscp script for yesterday's date
 "C:\Program Files (x86)\WinSCP\WinSCP.com" /script=**PATH TO FILE**\trackman_pull.txt /parameter // %year% %month% %day%
