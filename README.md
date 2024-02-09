@@ -4,20 +4,20 @@ a collection of baseball related projects
 
 ## batch
 
-# trackman pull & viz
+### trackman pull & viz
 
 ## statcast
 
-# catching
+#### catching
 
-# run expectancy
+### run expectancy
 
 ## trackman
 
-# pitch dash
+### pitch dash
 
-# pretty plot
+### pretty plot
 
-# pitch report
+### pitch report
 
-# arsenal pdf
+### arsenal pdf
