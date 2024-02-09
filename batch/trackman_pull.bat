@@ -21,7 +21,7 @@ if %month% LSS 10 set month=0%month%
 if %day% LSS 10 set day=0%day%
 
 rem set and create the directory for yesterday
-set DATE_DIR=C:\Users\adam.bloebaum\Documents\Trackman_Batch_Pulls\%year%-%month%-%day%
+set DATE_DIR=PATH TO OUTPUT DIRECTORY\%year%-%month%-%day%
 mkdir %DATE_DIR%
 
 rem check for errors
