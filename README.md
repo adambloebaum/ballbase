@@ -1,6 +1,6 @@
 # baseball
 
-a collection of baseball related projects
+dashboards, models, pipelines, and visualizations using mlb statcast and trackman baseball data
 
 ## batch
 
