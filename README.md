@@ -1,13 +1,19 @@
 # baseball
 
+### Table of Contents
+
+- [Batch](#batch)
+- [Statcast](#statcast)
+- [TrackMan](#trackman)
+
 ## Batch
 
-This system consists of scripts and configurations to automate the pulling and visualization of baseball data from Trackman. It uses batch scripts for data retrieval and a Python script for data visualization.
+This system consists of scripts and configurations to automate the pulling and visualization of baseball data from TrackMan. It uses batch scripts for data retrieval and a Python script for data visualization.
 
 ### System Overview
 
 The system includes:
-- `trackman_pull.bat` and `trackman_pull.txt`: Scripts for automating the download of Trackman baseball data.
+- `trackman_pull.bat` and `trackman_pull.txt`: Scripts for automating the download of TrackMan baseball data.
 - `trackman_viz.bat` and `trackman_viz.py`: Scripts for visualizing the downloaded data.
 
 ### Installation
@@ -18,7 +24,7 @@ The system includes:
 
 ### Usage
 
-- To pull data from Trackman:
+- To pull data from TrackMan:
   Run `trackman_pull.bat` with necessary parameters.
 - To visualize the data:
   Run `trackman_viz.bat` after the data pull is complete.
@@ -27,7 +33,7 @@ The system includes:
 
 ##### trackman_pull.txt
 
-- This script is used for SFTP connection to Trackman's server to download data.
+- This script is used for SFTP connection to TrackMan's server to download data.
 - It contains commands for batch aborting, turning off confirmations, opening an SFTP session, changing directories, and downloading files.
 
   ```txt
@@ -42,7 +48,7 @@ The system includes:
 
 #### trackman_viz.py
 
-This Python script performs data visualization for the Trackman baseball data. It includes the following key functionalities:
+This Python script performs data visualization for the TrackMan baseball data. It includes the following key functionalities:
 
 - **Date Calculation**:
   ```python
@@ -261,9 +267,9 @@ The system includes:
   ...
   ```
 
-## Trackman
+## TrackMan
 
-This project consists of a suite of Python scripts designed for analyzing and visualizing Trackman baseball pitching data. Each script serves a unique role in processing the data, generating reports, and creating interactive dashboards.
+This project consists of a suite of Python scripts designed for analyzing and visualizing TrackMan baseball pitching data. Each script serves a unique role in processing the data, generating reports, and creating interactive dashboards.
 
 ### System Overview
 
@@ -287,3 +293,119 @@ The system includes:
 - Run `pretty_plot.py` to create polished visualizations of the data.
 
 ### Scripts Description
+
+#### arsenal_pdf.py
+
+`arsenal_pdf.py` generates PDF reports of pitch data, focusing on essential metrics like pitch type, velocity, spin rate, and break.
+
+- **Data Import and Preparation**:
+  ```python
+  df = pd.read_csv(r'PATH TO CSV.csv', index_col=False)
+  df = df[['PitchNo', 'Pitcher', 'TaggedPitchType', 'RelSpeed', 'SpinRate', 'InducedVertBreak', 'HorzBreak']]
+  ```
+
+- **Data Transformation and Grouping**:
+  ```python
+  grouped_df = df.groupby(['Pitcher', 'TaggedPitchType']).mean().reset_index()
+  grouped_df = grouped_df.drop('PitchNo', axis=1)
+  ```
+
+- **Plotting DataFrame as a Table**:
+  ```python
+  fig, ax = plt.subplots(figsize=(5, 2))
+  ax.axis('off')
+  ax.table(cellText=grouped_df.values, colLabels=grouped_df.columns, loc='center')
+  ```
+
+- **Saving Figure to PDF**:
+  ```python
+  pdf = PdfPages(r'PATH TO OUTPUT.pdf')
+  pdf.savefig(fig, bbox_inches='tight')
+  pdf.close()
+  ```
+
+#### pitch_dash.py
+
+`pitch_dash.py` creates an interactive dashboard for pitch data analysis using Dash and Plotly.
+
+- **App Initialization and Layout Definition**:
+  ```python
+  app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+  app.layout = html.Div([...])
+  ```
+
+- **Data Visualization Components**:
+  ```python
+  dcc.Graph(id='sample_graph', ...)
+  ```
+
+- **Callback for Updating Dashboard**:
+  ```python
+  @app.callback(...)
+  def update_output(contents, dropdown_value, filename):
+      ...
+  ```
+
+- **Graph Creation and Formatting**:
+  ```python
+  fig = px.scatter(df, x='...', y='...', color='TaggedPitchType', ...)
+  ```
+
+#### pitch_report.py
+
+`pitch_report.py` produces comprehensive reports on pitching data, with detailed visualizations.
+
+- **Data Import and Selection**:
+  ```python
+  df = pd.read_csv(r'PATH TO CSV.csv', index_col=False)
+  ```
+
+- **Plotting Command and Break Plots**:
+  ```python
+  command_plot = sns.scatterplot(ax=ax1, x='PlateLocSide', y='PlateLocHeight', hue='TaggedPitchType', s=25)
+  break_plot = sns.scatterplot(ax=ax2, x='HorzBreak', y='InducedVertBreak', hue='TaggedPitchType', s=25)
+  ```
+
+- **Customizing Ticks, Labels, and Legends**:
+  ```python
+  plt.rc('xtick', labelsize=8)
+  plt.rc('ytick', labelsize=8)
+  fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, 0.90), ncol=len(df['TaggedPitchType'].unique()), prop={'size': 8})
+  ```
+
+- **Adding Patches and Center Lines**:
+  ```python
+  ax1.add_patch(Rectangle((-0.708, 1.5), 1.416, 2.1, fill=False, edgecolor='black', lw=1))
+  ax2.plot((-30, 30), (0, 0), color='black', linewidth=1)
+  ```
+
+#### pretty_plot.py
+
+`pretty_plot.py` creates visually appealing plots of pitch data, highlighting key pitch metrics.
+
+- **Data Grouping and Aggregation**:
+  ```python
+  grouped_df = df_condensed.groupby(['TaggedPitchType']).mean()
+  ```
+
+- **Name and Date Formatting**:
+  ```python
+  def format_name(name):
+      parts = name.split(", ")
+      return f"{parts[1]} {parts[0]}"
+  def parse_date(date_str):
+      return datetime.datetime.strptime(date_str, fmt).strftime("%Y_%m_%d")
+  ```
+
+- **Plot Initialization and Scatter Plotting**:
+  ```python
+  fig, ax = plt.subplots(figsize=(10, 6))
+  ax.scatter(subset['HorzBreak'], subset['InducedVertBreak'], ...)
+  ```
+
+- **Plot Formatting and Legend Customization**:
+  ```python
+  plt.xlabel('Horizontal Break (in)')
+  plt.ylabel('Induced Vertical Break (in)')
+  plt.legend(loc='upper center', ...)
+  ```
